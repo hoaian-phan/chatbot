@@ -27,3 +27,14 @@ if 'generated' not in st.session_state:
 
 if 'past' not in st.session_state:
     st.session_state['past'] = []
+
+# Get user input
+
+
+def get_input():
+    input_text = st.text_input(
+        'You: ', 'Hi, how can I help you today?', key='input')
+    return input_text
+
+
+user_input = get_input()
