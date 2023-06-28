@@ -10,13 +10,13 @@ def generate_response(prompt):
     completions = openai.Completion.create(
         engine='text-davinci-003',
         prompt=prompt,
-        max_tokens=100,
+        max_tokens=1024,
         n=1,
-        stope=None,
-        temparature=0.5,
+        stop=None,
+        temperature=0.5,
     )
-    message = completions.choices[0].text
-    return message
+    result = completions.choices[0].text
+    return result
 
 
 st.title('chatBot: Streamlit + openAI')
@@ -33,8 +33,18 @@ if 'past' not in st.session_state:
 
 def get_input():
     input_text = st.text_input(
-        'You: ', 'Hi, how can I help you today?', key='input')
+        'You: ', 'Hi, what is your name?', key='input')
     return input_text
 
 
 user_input = get_input()
+
+if user_input:
+    output = generate_response(user_input)
+    st.session_state['past'].append(user_input)
+    st.session_state['generated'].append(output)
+
+if st.session_state['generated']:
+    for i in range(len(st.session_state['generated'])-1, -1, -1):
+        message(st.session_state['generated'][i], key=str(i))
+        message(st.session_state['past'][i], is_user=True, key=str(i)+'_user')
