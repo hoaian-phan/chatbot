@@ -39,6 +39,7 @@ def get_input():
 
 user_input = get_input()
 
+# Display the chat
 if user_input:
     output = generate_response(user_input)
     st.session_state['past'].append(user_input)
